@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -24,13 +25,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	errLoadEnv := godotenv.Load()
+	if errLoadEnv != nil {
+		log.Fatalf("Error loading .env file: %s", errLoadEnv)
+	}
+
 	connStr := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_NAME"),
+		os.Getenv("POSTGRESQL_HOST"),
+		os.Getenv("POSTGRESQL_PORT"),
+		os.Getenv("POSTGRESQL_USER"),
+		os.Getenv("POSTGRESQL_PASSWORD"),
+		os.Getenv("POSTGRESQL_DB_NAME"),
 	)
 
 	db, errDB := sql.Open("postgres", connStr)

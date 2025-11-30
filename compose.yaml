@@ -1,0 +1,16 @@
+services:
+  postgresql:
+    image: postgres:18
+    container_name: "postgresql"
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DB_NAME}
+    ports:
+     - "${POSTGRESQL_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/18/docker
+
+volumes:
+  pgdata:
